@@ -1,0 +1,208 @@
+# Unknown
+Hehehe secret
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine Invite</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+* {
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(135deg, #fbc2eb, #a6c1ee);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.8s ease;
+  overflow: hidden;
+}
+
+.container {
+  background: white;
+  padding: 40px;
+  border-radius: 20px;
+  text-align: center;
+  width: 90%;
+  max-width: 420px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.95);
+}
+
+h1 {
+  margin-bottom: 10px;
+}
+
+p {
+  color: #555;
+}
+
+button {
+  padding: 12px 28px;
+  margin: 10px;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 16px;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+  transition: transform 0.2s ease, opacity 0.4s ease;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+#refreshBtn {
+  background: #ff8fab;
+  color: white;
+}
+
+#yesBtn {
+  background: #ff6f91;
+  color: white;
+}
+
+#noBtn {
+  background: #6c63ff;
+  color: white;
+  position: absolute;
+}
+
+.message {
+  margin-top: 20px;
+  text-align: left;
+  font-size: 14px;
+}
+
+.confetti {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  background: red;
+  top: -10px;
+  animation: fall linear forwards;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container" id="errorScreen">
+  <h1>404</h1>
+  <p>Oops! Page Not Found</p>
+  <button id="refreshBtn">Refresh</button>
+</div>
+
+<div class="container hidden" id="valentineScreen">
+  <h1>Will you be my Valentine? 💖</h1>
+
+  <div>
+    <button id="yesBtn">YES</button>
+    <button id="noBtn">NO</button>
+  </div>
+
+  <div class="message hidden" id="yesMessage">
+    <p><strong>By clicking YES you agree to:</strong></p>
+    <ul>
+      <li>Unlimited cuddles</li>
+      <li>Lifetime supply of bad puns</li>
+      <li>Mutual pizza stealing rights</li>
+    </ul>
+    <p><strong>Effective immediately!</strong></p>
+  </div>
+</div>
+
+<script>
+const errorScreen = document.getElementById("errorScreen");
+const valentineScreen = document.getElementById("valentineScreen");
+const refreshBtn = document.getElementById("refreshBtn");
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+const yesMessage = document.getElementById("yesMessage");
+
+let noClicks = 0;
+let emojis = ["💖", "😜"];
+
+refreshBtn.onclick = () => {
+  errorScreen.classList.add("hidden");
+  setTimeout(() => valentineScreen.classList.remove("hidden"), 600);
+};
+
+yesBtn.onclick = () => {
+  yesMessage.classList.remove("hidden");
+
+  setTimeout(() => {
+    yesBtn.style.opacity = "0";
+    noBtn.style.opacity = "0";
+  }, 1000);
+
+  launchConfetti();
+};
+
+noBtn.onclick = () => {
+  noClicks++;
+
+  const x = Math.random() * (window.innerWidth - 100);
+  const y = Math.random() * (window.innerHeight - 100);
+  noBtn.style.left = x + "px";
+  noBtn.style.top = y + "px";
+
+  document.body.style.background =
+    `linear-gradient(135deg,
+    hsl(${Math.random() * 360}, 80%, 85%),
+    hsl(${Math.random() * 360}, 80%, 85%))`;
+
+  if (noClicks >= 2) {
+    document.querySelector("h1").innerText =
+      "Will you be my Valentine? 😜";
+  }
+};
+
+function launchConfetti() {
+  const duration = 5000;
+  const end = Date.now() + duration;
+
+  const interval = setInterval(() => {
+    if (Date.now() > end) {
+      clearInterval(interval);
+      return;
+    }
+
+    const confetti = document.createElement("div");
+    confetti.className = "confetti";
+    confetti.style.left = Math.random() * window.innerWidth + "px";
+    confetti.style.backgroundColor =
+      `hsl(${Math.random() * 360}, 100%, 60%)`;
+    confetti.style.animationDuration =
+      Math.random() * 3 + 2 + "s";
+
+    document.body.appendChild(confetti);
+
+    setTimeout(() => confetti.remove(), 5000);
+  }, 150);
+}
+</script>
+
+</body>
+</html>
